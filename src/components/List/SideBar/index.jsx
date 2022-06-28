@@ -1,12 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import * as S from './styles'
 
-export default function SideBar() {
+/* eslint-disable react/prop-types */
+export default function SideBar(props) {
 	const types = ['Bug', 'Dark', 'Dragon', 'Eletric', 'Fairy']
 	const typesSelected = ['Dark', 'Bug']
 
 	const checkSelected = (type) =>
 		typesSelected.find((selects) => selects === type)
+
+	useEffect(() => {}, [props.data])
 
 	return (
 		<S.ContainerSidebar>

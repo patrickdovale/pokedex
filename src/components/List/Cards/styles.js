@@ -6,8 +6,9 @@ export const CotainerCards = styled.div`
 `
 
 export const Cards = styled.div`
-	display: flex;
-    gap: 32px;
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+    grid-gap: 25px;
     flex-wrap: wrap;
 `
 
