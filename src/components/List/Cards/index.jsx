@@ -13,7 +13,7 @@ export default function Cards(props) {
 						<S.Card key={item?.national_number}>
 							<S.ImageContainer>
 								<S.ImagePoke
-									src={item?.sprites.large}
+									src={item?.sprites.normal}
 									alt="pokemon"
 								/>
 							</S.ImageContainer>
@@ -24,7 +24,12 @@ export default function Cards(props) {
 								<S.LabelName>{item?.name}</S.LabelName>
 								<S.Types>
 									{item?.type.map((item) => (
-										<S.Type key={item}>{item}</S.Type>
+										<S.Type
+											key={item}
+											theme={item.toLowerCase()}
+										>
+											{item}
+										</S.Type>
 									))}
 								</S.Types>
 							</S.BodyCard>
