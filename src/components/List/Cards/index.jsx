@@ -1,9 +1,36 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import * as S from './styles'
+import { faHeart } from '@fortawesome/free-solid-svg-icons'
 
 /* eslint-disable react/prop-types */
 export default function Cards(props) {
 	const { data } = props
+	const [itemsFavorited, setItemsFavorited] = useState([])
+
+	function favorited(id) {
+		let favorit = JSON.parse(localStorage.getItem('FAVORITED')) || []
+
+		if (favorit.some((item) => item === id)) {
+			let index = favorit.findIndex((item) => item === id)
+			favorit.splice(index, 1)
+			localStorage.setItem('FAVORITED', JSON.stringify(favorit))
+			return setItemsFavorited(
+				JSON.parse(localStorage.getItem('FAVORITED')) || []
+			)
+		} else {
+			localStorage.setItem(
+				'FAVORITED',
+				JSON.stringify([...itemsFavorited, id])
+			)
+			return setItemsFavorited(
+				JSON.parse(localStorage.getItem('FAVORITED')) || []
+			)
+		}
+	}
+
+	useEffect(() => {
+		setItemsFavorited(JSON.parse(localStorage.getItem('FAVORITED')) || [])
+	}, [])
 
 	return (
 		<S.CotainerCards>
@@ -11,6 +38,13 @@ export default function Cards(props) {
 				{data?.map((item) => {
 					return (
 						<S.Card key={item?.national_number}>
+							<S.IconFavorited
+								icon={faHeart}
+								visible={itemsFavorited.some(
+									(id) => id === item?.national_number
+								)}
+								onClick={() => favorited(item?.national_number)}
+							/>
 							<S.ImageContainer>
 								<S.ImagePoke
 									src={item?.sprites.normal}

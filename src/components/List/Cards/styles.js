@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const colours = {
 	normal: '#A8A77A',
@@ -19,23 +20,39 @@ const colours = {
 	dark: '#705746',
 	steel: '#B7B7CE',
 	fairy: '#D685AD',
-};
+}
+
+export const IconFavorited = styled(FontAwesomeIcon)`
+	position: absolute;
+	right: 16px;
+	top: 8px;
+	color: ${(props) => (props.visible ? '#e90200' : '#595959')};
+	font-size: 24px;
+	cursor: pointer;
+	display: ${(props) => (props.visible ? 'block' : 'none')};
+`
 
 export const CotainerCards = styled.div`
 	display: flex;
-    width: 80%;
+	width: 80%;
 `
 
 export const Cards = styled.div`
 	display: grid;
 	grid-template-columns: repeat(5, 1fr);
-    grid-gap: 25px;
-    flex-wrap: wrap;
+	grid-gap: 25px;
+	flex-wrap: wrap;
 `
 
 export const Card = styled.div`
 	display: flex;
 	flex-direction: column;
+	position: relative;
+	&:hover {
+		${IconFavorited} {
+			display: block;
+		}
+	}
 `
 
 export const ImageContainer = styled.div`
@@ -61,25 +78,25 @@ export const BodyCard = styled.div`
 
 export const LabelNumber = styled.label`
 	font-weight: lighter;
-    color: #bdbdbd;
-    margin-top: 4px;
+	color: #bdbdbd;
+	margin-top: 4px;
 `
 
 export const LabelName = styled.h3`
 	font-weight: bold;
-    color: #919191;
-    margin-top: 8px;
+	color: #919191;
+	margin-top: 8px;
 `
 
 export const Types = styled.div`
 	display: flex;
-    gap: 8px;
-    margin-top: 16px;
+	gap: 8px;
+	margin-top: 16px;
 `
 
 export const Type = styled.label`
-	background: ${props => colours[props.theme]};
-    color: #000;
-    padding: 8px 12px;
-    border-radius:5px ;
+	background: ${(props) => colours[props.theme]};
+	color: #000;
+	padding: 8px 12px;
+	border-radius: 5px;
 `
