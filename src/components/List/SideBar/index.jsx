@@ -31,14 +31,15 @@ export default function SideBar(props) {
 	}
 
 	function handleChangeFilter(type) {
-		let types = formFilter.types
-		if (formFilter.types.some((item) => item === type)) {
-			let index = types.findIndex((item) => item === type)
-			types.splice(index, 1)
-			return setFormFilter({ ...formFilter, types: types })
+		const checkSelect = formFilter.types.findIndex((item) => item === type)
+		if (checkSelect >= 0) {
+			const filteredItems = formFilter.types.filter(
+				(item) => item !== type
+			)
+			setFormFilter({ ...formFilter, types: filteredItems })
+		} else {
+			setFormFilter({ ...formFilter, types: [...formFilter.types, type] })
 		}
-		types.push(...types, type)
-		return setFormFilter({ ...formFilter, types: types })
 	}
 
 	return (

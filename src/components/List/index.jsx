@@ -113,7 +113,6 @@ function List() {
 
 	useEffect(() => {
 		if (!isLoading) {
-			console.log(formFilter)
 			filterPokemons(
 				formFilter.order,
 				formFilter.search,
