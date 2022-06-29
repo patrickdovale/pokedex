@@ -4,7 +4,7 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons'
 
 /* eslint-disable react/prop-types */
 export default function Cards(props) {
-	const { data, itemsFavorited, setItemsFavorited } = props
+	const { data, itemsFavorited, setItemsFavorited, loading } = props
 
 	function favorited(id) {
 		let favorit = JSON.parse(localStorage.getItem('FAVORITED')) || []
@@ -33,43 +33,49 @@ export default function Cards(props) {
 
 	return (
 		<S.CotainerCards>
-			<S.Cards>
-				{data?.map((item) => {
-					return (
-						<S.Card key={item?.national_number}>
-							<S.IconFavorited
-								icon={faHeart}
-								visible={itemsFavorited.some(
-									(id) => id === item?.national_number
-								)}
-								onClick={() => favorited(item?.national_number)}
-							/>
-							<S.ImageContainer>
-								<S.ImagePoke
-									src={item?.sprites.normal}
-									alt="pokemon"
+			{!loading ? (
+				<S.Cards>
+					{data?.map((item) => {
+						return (
+							<S.Card key={item?.national_number}>
+								<S.IconFavorited
+									icon={faHeart}
+									visible={itemsFavorited.some(
+										(id) => id === item?.national_number
+									)}
+									onClick={() =>
+										favorited(item?.national_number)
+									}
 								/>
-							</S.ImageContainer>
-							<S.BodyCard>
-								<S.LabelNumber>
-									#{item?.national_number}
-								</S.LabelNumber>
-								<S.LabelName>{item?.name}</S.LabelName>
-								<S.Types>
-									{item?.type.map((item) => (
-										<S.Type
-											key={item}
-											theme={item.toLowerCase()}
-										>
-											{item}
-										</S.Type>
-									))}
-								</S.Types>
-							</S.BodyCard>
-						</S.Card>
-					)
-				})}
-			</S.Cards>
+								<S.ImageContainer>
+									<S.ImagePoke
+										src={item?.sprites.large}
+										alt="pokemon"
+									/>
+								</S.ImageContainer>
+								<S.BodyCard>
+									<S.LabelNumber>
+										#{item?.national_number}
+									</S.LabelNumber>
+									<S.LabelName>{item?.name}</S.LabelName>
+									<S.Types>
+										{item?.type.map((item) => (
+											<S.Type
+												key={item}
+												theme={item.toLowerCase()}
+											>
+												{item}
+											</S.Type>
+										))}
+									</S.Types>
+								</S.BodyCard>
+							</S.Card>
+						)
+					})}
+				</S.Cards>
+			) : (
+				<>Carregando</>
+			)}
 		</S.CotainerCards>
 	)
 }

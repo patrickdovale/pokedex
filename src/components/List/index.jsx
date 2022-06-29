@@ -18,8 +18,15 @@ const Provider = () => {
 }
 
 function List() {
+	const [loading, setLoading] = useState(false)
 	const [pokemons, setPokemons] = useState([])
 	const [itemsFavorited, setItemsFavorited] = useState([])
+	const [formFilter, setFormFilter] = useState({
+		order: '1',
+		search: '',
+		types: [],
+		favorited: false,
+	})
 
 	const { isLoading, data } = useQuery('getPokemons', () => getPokemons(), {
 		refetchInterval: false,
@@ -28,11 +35,12 @@ function List() {
 	})
 
 	const filterPokemons = (
-		order = 1,
-		search = '',
-		types = [],
-		favorited = false
+		order = formFilter.order,
+		search = formFilter.search,
+		types = formFilter.types,
+		favorited = formFilter.favorited
 	) => {
+		setLoading(true)
 		let resultFilter = [
 			...new Map(
 				data.data.results.map((obj) => [`${obj.national_number}`, obj])
@@ -62,36 +70,58 @@ function List() {
 		}
 
 		switch (order) {
-			case 1:
-				return setPokemons(
+			case '1':
+				setPokemons(
 					resultFilter.sort(
 						(a, b) => a.national_number - b.national_number
 					)
 				)
-			case 2:
-				return setPokemons(
+				return setLoading(false)
+			case '2':
+				setPokemons(
 					resultFilter.sort(
 						(a, b) => b.national_number - a.national_number
 					)
 				)
-			case 3:
-				return setPokemons(
+				return setLoading(false)
+			case '3':
+				setPokemons(
 					resultFilter.sort((a, b) => a.name.localeCompare(b.name))
 				)
-			case 4:
-				return setPokemons(
+				return setLoading(false)
+			case '4':
+				setPokemons(
 					resultFilter.sort((a, b) => b.name.localeCompare(a.name))
 				)
+				return setLoading(false)
 			default:
-				return setPokemons(resultFilter)
+				setPokemons(resultFilter)
+				return setLoading(false)
 		}
 	}
 
 	useEffect(() => {
 		if (!isLoading) {
-			filterPokemons(1, '', ['Flying', 'Poison'], true)
+			filterPokemons(
+				formFilter.order,
+				formFilter.search,
+				formFilter.types,
+				formFilter.favorited
+			)
 		}
 	}, [isLoading])
+
+	useEffect(() => {
+		if (!isLoading) {
+			console.log(formFilter)
+			filterPokemons(
+				formFilter.order,
+				formFilter.search,
+				formFilter.types,
+				formFilter.favorited
+			)
+		}
+	}, [formFilter])
 
 	return (
 		<S.SectionList>
@@ -99,13 +129,20 @@ function List() {
 				<img src={Loading} />
 			) : (
 				<S.ContainerList>
-					<HeaderList />
+					<HeaderList
+						formFilter={formFilter}
+						setFormFilter={setFormFilter}
+					/>
 					<S.ContainerBodyList>
-						<SideBar data={data.data.results} />
+						<SideBar
+							formFilter={formFilter}
+							setFormFilter={setFormFilter}
+						/>
 						<Cards
-							data={pokemons || []}
+							data={pokemons}
 							itemsFavorited={itemsFavorited}
 							setItemsFavorited={setItemsFavorited}
+							loading={loading}
 						/>
 					</S.ContainerBodyList>
 				</S.ContainerList>
