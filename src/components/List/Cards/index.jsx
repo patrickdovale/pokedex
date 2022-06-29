@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import * as S from './styles'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
 
 /* eslint-disable react/prop-types */
 export default function Cards(props) {
-	const { data } = props
-	const [itemsFavorited, setItemsFavorited] = useState([])
+	const { data, itemsFavorited, setItemsFavorited } = props
 
 	function favorited(id) {
 		let favorit = JSON.parse(localStorage.getItem('FAVORITED')) || []

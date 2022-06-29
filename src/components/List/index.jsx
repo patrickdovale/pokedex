@@ -19,6 +19,7 @@ const Provider = () => {
 
 function List() {
 	const [pokemons, setPokemons] = useState([])
+	const [itemsFavorited, setItemsFavorited] = useState([])
 
 	const { isLoading, data } = useQuery('getPokemons', () => getPokemons(), {
 		refetchInterval: false,
@@ -47,10 +48,10 @@ function List() {
 		}
 
 		if (favorited) {
-			resultFilter = resultFilter.filter(
-				(item) =>
-					item.name.includes(search) ||
-					item.national_number.includes(search)
+			let favorit = JSON.parse(localStorage.getItem('FAVORITED')) || []
+
+			resultFilter = resultFilter.filter((item) =>
+				favorit.some((id) => id === item.national_number)
 			)
 		}
 
@@ -88,7 +89,7 @@ function List() {
 
 	useEffect(() => {
 		if (!isLoading) {
-			filterPokemons(1, '', ['Flying', 'Poison'], false)
+			filterPokemons(1, '', ['Flying', 'Poison'], true)
 		}
 	}, [isLoading])
 
@@ -101,7 +102,11 @@ function List() {
 					<HeaderList />
 					<S.ContainerBodyList>
 						<SideBar data={data.data.results} />
-						<Cards data={pokemons || []} />
+						<Cards
+							data={pokemons || []}
+							itemsFavorited={itemsFavorited}
+							setItemsFavorited={setItemsFavorited}
+						/>
 					</S.ContainerBodyList>
 				</S.ContainerList>
 			)}
