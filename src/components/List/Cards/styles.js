@@ -34,13 +34,34 @@ export const IconFavorited = styled(FontAwesomeIcon)`
 
 export const CotainerCards = styled.div`
 	display: flex;
-	width: 80%;
+	height: calc(100vh - 300px);
+	overflow-y: auto;
+	overflow-x: hidden;
+
+	::-webkit-scrollbar {
+		width: 8px;
+	}
+
+	::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	::-webkit-scrollbar-thumb {
+		background: #e90200;
+		border-radius: 8px;
+		cursor: pointer;
+		height: 100px;
+	}
+
+	::-webkit-scrollbar-thumb:hover {
+		background: #f33735;
+	}
 `
 
 export const Cards = styled.div`
 	display: grid;
 	grid-template-columns: repeat(5, 1fr);
-	grid-gap: 25px;
+	grid-gap: 15px;
 	flex-wrap: wrap;
 `
 
